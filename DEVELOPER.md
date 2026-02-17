@@ -45,15 +45,15 @@ We built a production-aligned SPID-style authentication flow where the mobile ap
 ```mermaid
 flowchart TD
   U["User"] --> A["Android App (Ionic + Cordova)"]
-  A -->|Open system browser| B["/auth/spid/start (Backend)"]
-  B -->|Redirect| C["Signicat OIDC Authorize"]
-  C -->|Redirect| D["/auth/callback (Backend HTML)"]
-  D -->|App Links| A
-  D -->|Custom Scheme Fallback| A
-  A -->|POST /auth/exchange| B
-  B -->|Code Exchange + ID Token Validation| C
-  B -->|Mint App JWT| A
-  A -->|GET /api/me (Bearer JWT)| B
+  A -->|"Open system browser"| B["Backend: /auth/spid/start"]
+  B -->|"Redirect to authorize"| C["Signicat OIDC Authorize"]
+  C -->|"Redirect with code/state"| D["Backend: /auth/callback (HTML)"]
+  D -->|"HTTPS App Link"| A
+  D -->|"Custom scheme fallback"| A
+  A -->|"POST /auth/exchange"| E["Backend: /auth/exchange"]
+  E -->|"Code exchange + ID token validation"| C
+  E -->|"Mint app JWT"| A
+  A -->|"GET /api/me with Bearer JWT"| F["Backend: /api/me"]
 ```
 
 ---
@@ -224,4 +224,3 @@ flowchart TD
 2. Mobile app entry point: `/Users/vijay/projects/poc/ionic-spid-poc-cdx/mobile/src/App.tsx`
 3. Deep link handling: `/Users/vijay/projects/poc/ionic-spid-poc-cdx/mobile/src/services/deepLink.ts`
 4. ngrok helper: `/Users/vijay/projects/poc/ionic-spid-poc-cdx/scripts/start-ngrok-and-update.js`
-
