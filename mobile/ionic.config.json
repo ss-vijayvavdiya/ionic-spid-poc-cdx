@@ -1,0 +1,7 @@
+{
+  "name": "spid-poc-mobile",
+  "type": "react",
+  "integrations": {
+    "cordova": {}
+  }
+}

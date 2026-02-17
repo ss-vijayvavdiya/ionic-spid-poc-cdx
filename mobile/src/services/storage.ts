@@ -1,0 +1,16 @@
+// Tiny wrapper around localStorage for saving the app JWT.
+// In production you might use a secure storage plugin.
+
+const TOKEN_KEY = 'spid_poc_token';
+
+export function saveToken(token: string): void {
+  localStorage.setItem(TOKEN_KEY, token);
+}
+
+export function getToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+export function clearToken(): void {
+  localStorage.removeItem(TOKEN_KEY);
+}

@@ -1,0 +1,71 @@
+{
+  "name": "spid-poc-mobile",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Ionic React + Cordova mobile app for SPID-style SSO PoC",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "ionic:build": "ionic build",
+    "cordova:prepare": "ionic cordova prepare android",
+    "cordova:build": "ionic cordova build android",
+    "cordova:run": "ionic cordova run android --device"
+  },
+  "dependencies": {
+    "@ionic/react": "^7.6.0",
+    "@ionic/react-router": "^7.6.0",
+    "ionicons": "^7.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^5.3.4",
+    "react-router-dom": "^5.3.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^4.2.1",
+    "cordova": "^12.0.0",
+    "cordova-android": "^14.0.1",
+    "cordova-plugin-customurlscheme": "^5.0.2",
+    "cordova-plugin-inappbrowser": "^5.0.0",
+    "ionic-plugin-deeplinks": "^1.0.20",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.10"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-inappbrowser": {},
+      "ionic-plugin-deeplinks": {
+        "URL_SCHEME": "smartsense",
+        "DEEPLINK_SCHEME": "https",
+        "DEEPLINK_HOST": "8343-14-195-76-134.ngrok-free.app",
+        "ANDROID_PATH_PREFIX": "/auth/callback",
+        "ANDROID_2_PATH_PREFIX": "/",
+        "ANDROID_3_PATH_PREFIX": "/",
+        "ANDROID_4_PATH_PREFIX": "/",
+        "ANDROID_5_PATH_PREFIX": "/",
+        "DEEPLINK_2_SCHEME": " ",
+        "DEEPLINK_2_HOST": " ",
+        "DEEPLINK_3_SCHEME": " ",
+        "DEEPLINK_3_HOST": " ",
+        "DEEPLINK_4_SCHEME": " ",
+        "DEEPLINK_4_HOST": " ",
+        "DEEPLINK_5_SCHEME": " ",
+        "DEEPLINK_5_HOST": " "
+      },
+      "cordova-plugin-customurlscheme": {
+        "URL_SCHEME": "smartsense",
+        "ANDROID_SCHEME": "smartsense",
+        "ANDROID_HOST": "auth",
+        "ANDROID_PATHPREFIX": "/callback"
+      }
+    },
+    "platforms": [
+      "android"
+    ]
+  }
+}

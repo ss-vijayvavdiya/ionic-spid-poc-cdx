@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SPID PoC</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Capture early deep links before JS bundle loads -->
+    <script>
+      window.__initialDeepLink = null;
+      window.handleOpenURL = function (url) {
+        window.__initialDeepLink = url;
+      };
+    </script>
+    <!-- Cordova injects cordova.js at runtime on device; in the browser it is ignored -->
+    <script src="cordova.js"></script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

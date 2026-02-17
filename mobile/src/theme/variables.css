@@ -1,0 +1,16 @@
+/*
+  Theme variables for Ionic.
+  You can tweak these to change colors app-wide.
+*/
+
+:root {
+  --ion-color-primary: #1a73e8;
+  --ion-color-primary-rgb: 26, 115, 232;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1765cc;
+  --ion-color-primary-tint: #3183ea;
+
+  --ion-background-color: #f7f8fb;
+  --ion-text-color: #1a1a1a;
+}
