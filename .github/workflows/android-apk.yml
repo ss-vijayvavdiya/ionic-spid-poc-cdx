@@ -1,0 +1,90 @@
+name: Build Android APK
+
+on:
+  # Manual run from the GitHub Actions tab
+  workflow_dispatch:
+
+  # Auto-run when mobile code changes on main/master
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - mobile/**
+      - .github/workflows/android-apk.yml
+
+  # Also validate APK build on PRs touching mobile code
+  pull_request:
+    paths:
+      - mobile/**
+      - .github/workflows/android-apk.yml
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    # Run shell commands from the mobile folder by default
+    defaults:
+      run:
+        working-directory: mobile
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          sdkmanager --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          yes | sdkmanager --licenses
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build Ionic web assets (www/)
+        run: npm run build
+
+      - name: Disable Cordova telemetry for CI
+        run: npx cordova telemetry off
+
+      # platforms/ is gitignored, so we add Android each run
+      - name: Add Android platform
+        run: npx cordova platform add android@14.0.1
+
+      - name: Prepare Cordova Android project
+        run: npx cordova prepare android
+
+      - name: Build debug APK
+        run: npx cordova build android --debug
+
+      - name: Find generated APK
+        run: |
+          APK_PATH="$(find platforms/android -type f -name '*-debug.apk' | head -n 1)"
+          if [ -z "$APK_PATH" ]; then
+            echo "No debug APK was generated."
+            exit 1
+          fi
+          echo "APK_PATH=$APK_PATH" >> "$GITHUB_ENV"
+          ls -lh "$APK_PATH"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: spid-poc-android-debug-apk
+          path: mobile/${{ env.APK_PATH }}
+          if-no-files-found: error
