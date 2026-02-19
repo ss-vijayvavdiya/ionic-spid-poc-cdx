@@ -1,16 +1,45 @@
 /*
-  Theme variables for Ionic.
-  You can tweak these to change colors app-wide.
+  Global Ionic theme tokens.
+  These values intentionally keep strong contrast and a clean POS visual language.
 */
 
 :root {
-  --ion-color-primary: #1a73e8;
-  --ion-color-primary-rgb: 26, 115, 232;
+  --ion-font-family: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+
+  --ion-color-primary: #0e4aa8;
+  --ion-color-primary-rgb: 14, 74, 168;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #1765cc;
-  --ion-color-primary-tint: #3183ea;
+  --ion-color-primary-shade: #0c4194;
+  --ion-color-primary-tint: #2660b1;
 
-  --ion-background-color: #f7f8fb;
-  --ion-text-color: #1a1a1a;
+  --ion-color-secondary: #0a8f83;
+  --ion-color-secondary-rgb: 10, 143, 131;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #097e74;
+  --ion-color-secondary-tint: #23a095;
+
+  --ion-color-tertiary: #c17a1d;
+  --ion-color-tertiary-rgb: 193, 122, 29;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #aa6b19;
+  --ion-color-tertiary-tint: #c98a34;
+
+  --ion-color-success: #1e9f4b;
+  --ion-color-warning: #d98e08;
+  --ion-color-danger: #cc3a3a;
+  --ion-color-medium: #6b7280;
+  --ion-color-light: #f4f7fb;
+
+  --ion-background-color: #eef3f9;
+  --ion-background-color-rgb: 238, 243, 249;
+  --ion-text-color: #17202a;
+  --ion-toolbar-background: #0e4aa8;
+  --ion-toolbar-color: #ffffff;
+
+  --app-radius-lg: 16px;
+  --app-radius-md: 12px;
+  --app-card-shadow: 0 10px 24px rgba(16, 38, 84, 0.08);
 }

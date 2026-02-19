@@ -1,0 +1,253 @@
+{
+  "app": {
+    "name": "SmartSense POS",
+    "offline": "Offline",
+    "online": "Online"
+  },
+  "menu": {
+    "checkout": "Kasse",
+    "receipts": "Belege / Verlauf",
+    "products": "Produkte",
+    "customers": "Kunden",
+    "profile": "Profil",
+    "payments": "Zahlungen",
+    "printer": "Drucker",
+    "reports": "Berichte",
+    "settings": "Einstellungen",
+    "support": "Support",
+    "logout": "Abmelden",
+    "switchMerchant": "Händler wechseln",
+    "currentMerchant": "Aktueller Händler"
+  },
+  "auth": {
+    "title": "Anmeldung",
+    "subtitle": "Mit SPID über Signicat anmelden.",
+    "loginWithSpid": "Mit SPID anmelden",
+    "continueLogin": "Anmeldung fortsetzen (Callback)",
+    "status": "Status",
+    "lastCallback": "Letzte Callback-URL",
+    "loggedOut": "Abgemeldet.",
+    "loginSuccess": "Anmeldung erfolgreich.",
+    "loginFailed": "Anmeldung fehlgeschlagen: {{message}}",
+    "exchangeInProgress": "Code wird mit Backend ausgetauscht...",
+    "missingCodeState": "Callback-URL enthält kein code/state.",
+    "fetchProfileFailed": "Profil konnte nicht geladen werden",
+    "loginFirst": "Bitte zuerst anmelden."
+  },
+  "pages": {
+    "checkout": "Kasse",
+    "receipts": "Belege",
+    "receiptDetail": "Belegdetails",
+    "products": "Produkte",
+    "profile": "Profil",
+    "newProduct": "Neues Produkt",
+    "editProduct": "Produkt bearbeiten",
+    "settings": "Einstellungen",
+    "language": "Sprache",
+    "paymentSettings": "Zahlungen",
+    "printerSettings": "Drucker",
+    "reports": "Berichte",
+    "support": "Support",
+    "customers": "Kunden",
+    "merchantSelect": "Händler auswählen"
+  },
+  "common": {
+    "comingSoon": "Dieser Bereich ist als Gerüst bereit und wird im nächsten Schritt erweitert.",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "select": "Auswählen",
+    "search": "Suchen",
+    "noData": "Keine Daten",
+    "pendingSync": "Ausstehende Synchronisierung ({{count}})",
+    "back": "Zurück",
+    "loading": "Wird geladen..."
+  },
+  "settings": {
+    "languageDescription": "App-Sprache auswählen. Die Auswahl wird lokal gespeichert.",
+    "languageEnglish": "English",
+    "languageItalian": "Italiano",
+    "languageGerman": "Deutsch",
+    "businessProfile": "Unternehmensprofil",
+    "payments": "Zahlungen",
+    "printer": "Drucker",
+    "reports": "Berichte",
+    "support": "Support"
+  },
+  "merchant": {
+    "notSelected": "Bitte zuerst einen Händler auswählen."
+  },
+  "payment": {
+    "cash": "Bar",
+    "card": "Karte",
+    "wallet": "Wallet",
+    "split": "Geteilt"
+  },
+  "sync": {
+    "title": "Synchronisierung",
+    "pending": "Ausstehend",
+    "failed": "Fehlgeschlagen",
+    "synced": "Synchronisiert"
+  },
+  "checkout": {
+    "products": "Produkte",
+    "searchProducts": "Produkt nach Name suchen",
+    "refreshProducts": "Produkte aktualisieren",
+    "cart": "Warenkorb",
+    "remove": "Entfernen",
+    "emptyCart": "Warenkorb ist leer.",
+    "emptyCartError": "Bitte zuerst mindestens ein Produkt hinzufügen.",
+    "subtotal": "Zwischensumme",
+    "tax": "Steuer",
+    "vat": "MwSt.",
+    "total": "Gesamt",
+    "issueReceipt": "Beleg ausstellen",
+    "selectPayment": "Zahlungsmethode wählen",
+    "selectPaymentSubtitle": "Wählen Sie, wie der Kunde bezahlt hat.",
+    "queuedForSync": "Beleg zur Synchronisierung vorgemerkt (offline).",
+    "issuedSuccess": "Beleg erfolgreich erstellt.",
+    "issueFailed": "Beleg konnte nicht erstellt werden",
+    "emptyProductsTitle": "Keine Produkte verfügbar",
+    "emptyProductsDescription": "Produkte hinzufügen oder vom Server aktualisieren, um zu starten.",
+    "emptyCartTitle": "Warenkorb ist leer"
+  },
+  "products": {
+    "title": "Produkte",
+    "searchPlaceholder": "Produkte suchen",
+    "refresh": "Aktualisieren",
+    "addProduct": "Produkt hinzufügen",
+    "loadDemo": "Demo-Produkte laden",
+    "demoSeeded": "Demo-Produkte geladen: {{count}}",
+    "empty": "Keine Produkte für diesen Händler",
+    "newTitle": "Produkt erstellen",
+    "editTitle": "Produkt bearbeiten",
+    "saved": "Produkt gespeichert",
+    "notFound": "Produkt nicht gefunden",
+    "fields": {
+      "name": "Name",
+      "priceCents": "Preis (Cent)",
+      "vatRate": "Steuersatz (%)",
+      "category": "Kategorie",
+      "sku": "SKU"
+    },
+    "validation": {
+      "nameRequired": "Produktname ist erforderlich.",
+      "priceRequired": "Preis muss größer als 0 sein.",
+      "vatRequired": "Steuersatz muss 0 oder größer sein.",
+      "invalid": "Bitte Produktfelder prüfen."
+    },
+    "emptyTitle": "Keine Produkte gefunden"
+  },
+  "receipts": {
+    "title": "Belege",
+    "empty": "Noch keine Belege",
+    "notFound": "Beleg nicht gefunden",
+    "onlineOnlyAction": "Aktion erfordert Internetverbindung.",
+    "groups": {
+      "today": "Heute",
+      "yesterday": "Gestern",
+      "other": "Älter"
+    },
+    "filters": {
+      "status": "Status",
+      "payment": "Zahlung",
+      "all": "Alle"
+    },
+    "actions": {
+      "send": "Senden",
+      "print": "Drucken",
+      "void": "Stornieren",
+      "refund": "Erstatten"
+    },
+    "status": {
+      "completed": "Abgeschlossen",
+      "voided": "Storniert",
+      "refunded": "Erstattet",
+      "pendingSync": "Wartet auf Sync"
+    },
+    "emptyTitle": "Noch keine Belege vorhanden",
+    "notFoundTitle": "Beleg nicht gefunden"
+  },
+  "paymentsSettings": {
+    "cash": "Bar",
+    "card": "Karte",
+    "wallet": "Wallet",
+    "defaultMethod": "Standardmethode",
+    "saved": "Zahlungseinstellungen lokal gespeichert",
+    "split": "Geteilt",
+    "lastSavedAt": "Gespeichert am {{date}}"
+  },
+  "printer": {
+    "scanDevices": "Geräte suchen",
+    "connectDisconnect": "Verbinden/Trennen",
+    "testPrint": "Testdruck",
+    "scanDone": "Suche abgeschlossen (Platzhalter).",
+    "connectDone": "Verbindung abgeschlossen (Platzhalter).",
+    "testDone": "Testdruck abgeschlossen (Platzhalter).",
+    "status": "Druckerstatus",
+    "connected": "Verbunden",
+    "disconnected": "Getrennt",
+    "selectedDevice": "Ausgewähltes Gerät",
+    "selectDevice": "Gerät auswählen",
+    "connect": "Verbinden",
+    "disconnect": "Trennen",
+    "scanSuccess": "Suche abgeschlossen. {{count}} Geräte gefunden.",
+    "selectPrinterFirst": "Bitte zuerst einen Drucker auswählen.",
+    "connectSuccess": "Mit {{name}} verbunden.",
+    "disconnectSuccess": "Drucker getrennt.",
+    "connectBeforeTest": "Vor dem Testdruck einen Drucker verbinden.",
+    "testSuccess": "Testdruck erfolgreich gesendet.",
+    "lastScanAt": "Letzte Suche: {{date}}",
+    "lastTestAt": "Letzter Testdruck: {{date}}",
+    "lastSavedAt": "Gespeichert am {{date}}"
+  },
+  "reports": {
+    "todaySales": "Umsatz heute",
+    "receiptsCount": "Belege",
+    "exportCsv": "CSV exportieren",
+    "exportDone": "CSV-Export abgeschlossen. {{count}} Belege enthalten.",
+    "refresh": "Daten aktualisieren",
+    "todayTax": "Steuer heute",
+    "noDataToExport": "Keine Belege für Export verfügbar.",
+    "emptyTitle": "Heute keine Umsätze",
+    "emptyDescription": "Belege erstellen, um die Tagesübersicht zu sehen.",
+    "lastExportAt": "Letzter Export: {{date}}"
+  },
+  "support": {
+    "faqOffline": "Wie funktioniert der Offline-Modus?",
+    "faqOfflineAnswer": "Belege werden lokal gespeichert und bei Verbindung automatisch synchronisiert.",
+    "faqTenant": "Wie wird Tenant-Isolation erzwungen?",
+    "faqTenantAnswer": "API-Aufrufe enthalten JWT-Scope und Händlerkontext; das Backend validiert den Zugriff.",
+    "contact": "Support kontaktieren",
+    "preferredChannel": "Bevorzugter Kanal",
+    "notes": "Support-Notizen",
+    "notesPlaceholder": "Problem, Kontext und Reproduktionsschritte beschreiben.",
+    "saveDraft": "Entwurf speichern",
+    "draftSaved": "Support-Entwurf gespeichert.",
+    "contactStarted": "Support-E-Mail wurde geöffnet.",
+    "lastContactAt": "Letzter Kontakt: {{date}}",
+    "channel": {
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "profile": {
+    "title": "Benutzerprofil",
+    "refresh": "Von /api/me aktualisieren",
+    "fetchFailed": "Profil konnte nicht geladen werden: {{message}}",
+    "merchantsTitle": "Händlerzuordnungen",
+    "noMerchants": "Keine Händlerzuordnungen gefunden.",
+    "rawJson": "Rohes /api/me JSON",
+    "fields": {
+      "id": "Benutzer-ID",
+      "name": "Vollständiger Name",
+      "givenName": "Vorname",
+      "familyName": "Nachname",
+      "email": "E-Mail",
+      "merchantCount": "Anzahl Händler",
+      "role": "Rolle",
+      "vatNumber": "USt-IdNr.",
+      "address": "Adresse"
+    }
+  }
+}

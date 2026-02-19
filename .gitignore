@@ -9,6 +9,7 @@ mobile/node_modules/
 # Build / runtime outputs
 # =========================
 server/dist/
+server/data/
 mobile/www/
 mobile/dist/
 coverage/

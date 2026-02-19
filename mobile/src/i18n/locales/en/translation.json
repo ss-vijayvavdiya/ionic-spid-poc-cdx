@@ -1,0 +1,253 @@
+{
+  "app": {
+    "name": "SmartSense POS",
+    "offline": "Offline",
+    "online": "Online"
+  },
+  "menu": {
+    "checkout": "Checkout",
+    "receipts": "Receipts / History",
+    "products": "Products",
+    "customers": "Customers",
+    "profile": "Profile",
+    "payments": "Payments",
+    "printer": "Printer",
+    "reports": "Reports",
+    "settings": "Settings",
+    "support": "Support",
+    "logout": "Logout",
+    "switchMerchant": "Switch Merchant",
+    "currentMerchant": "Current merchant"
+  },
+  "auth": {
+    "title": "Login",
+    "subtitle": "Sign in with SPID via Signicat.",
+    "loginWithSpid": "Login with SPID",
+    "continueLogin": "Continue Login (Use Callback)",
+    "status": "Status",
+    "lastCallback": "Last callback URL",
+    "loggedOut": "Logged out.",
+    "loginSuccess": "Login successful.",
+    "loginFailed": "Login failed: {{message}}",
+    "exchangeInProgress": "Exchanging code with backend...",
+    "missingCodeState": "Callback URL did not contain code/state.",
+    "fetchProfileFailed": "Failed to load profile",
+    "loginFirst": "Please login first."
+  },
+  "pages": {
+    "checkout": "Checkout",
+    "receipts": "Receipts",
+    "receiptDetail": "Receipt Detail",
+    "products": "Products",
+    "profile": "Profile",
+    "newProduct": "New Product",
+    "editProduct": "Edit Product",
+    "settings": "Settings",
+    "language": "Language",
+    "paymentSettings": "Payments",
+    "printerSettings": "Printer",
+    "reports": "Reports",
+    "support": "Support",
+    "customers": "Customers",
+    "merchantSelect": "Select Merchant"
+  },
+  "common": {
+    "comingSoon": "This section is ready as a scaffold and will be expanded next.",
+    "save": "Save",
+    "cancel": "Cancel",
+    "select": "Select",
+    "search": "Search",
+    "noData": "No data",
+    "pendingSync": "Pending Sync ({{count}})",
+    "back": "Back",
+    "loading": "Loading..."
+  },
+  "settings": {
+    "languageDescription": "Choose app language. Selection is saved on this device.",
+    "languageEnglish": "English",
+    "languageItalian": "Italiano",
+    "languageGerman": "Deutsch",
+    "businessProfile": "Business Profile",
+    "payments": "Payments",
+    "printer": "Printer",
+    "reports": "Reports",
+    "support": "Support"
+  },
+  "merchant": {
+    "notSelected": "Select a merchant before continuing."
+  },
+  "payment": {
+    "cash": "Cash",
+    "card": "Card",
+    "wallet": "Wallet",
+    "split": "Split"
+  },
+  "sync": {
+    "title": "Sync",
+    "pending": "Pending",
+    "failed": "Failed",
+    "synced": "Synced"
+  },
+  "checkout": {
+    "products": "Products",
+    "searchProducts": "Search product by name",
+    "refreshProducts": "Refresh Products",
+    "cart": "Cart",
+    "remove": "Remove",
+    "emptyCart": "Cart is empty.",
+    "emptyCartError": "Add at least one product first.",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "vat": "VAT",
+    "total": "Total",
+    "issueReceipt": "Issue Receipt",
+    "selectPayment": "Select Payment Method",
+    "selectPaymentSubtitle": "Choose how the customer paid.",
+    "queuedForSync": "Receipt queued for sync (offline mode).",
+    "issuedSuccess": "Receipt issued successfully.",
+    "issueFailed": "Failed to issue receipt",
+    "emptyProductsTitle": "No products available",
+    "emptyProductsDescription": "Add products or refresh from server to start checkout.",
+    "emptyCartTitle": "Cart is empty"
+  },
+  "products": {
+    "title": "Products",
+    "searchPlaceholder": "Search products",
+    "refresh": "Refresh",
+    "addProduct": "Add Product",
+    "loadDemo": "Load Demo Products",
+    "demoSeeded": "Demo products loaded: {{count}}",
+    "empty": "No products for this merchant",
+    "newTitle": "Create Product",
+    "editTitle": "Edit Product",
+    "saved": "Product saved",
+    "notFound": "Product not found",
+    "fields": {
+      "name": "Name",
+      "priceCents": "Price (cents)",
+      "vatRate": "VAT rate (%)",
+      "category": "Category",
+      "sku": "SKU"
+    },
+    "validation": {
+      "nameRequired": "Product name is required.",
+      "priceRequired": "Price must be greater than 0.",
+      "vatRequired": "VAT rate must be 0 or higher.",
+      "invalid": "Please review product fields."
+    },
+    "emptyTitle": "No products found"
+  },
+  "receipts": {
+    "title": "Receipts",
+    "empty": "No receipts yet",
+    "notFound": "Receipt not found",
+    "onlineOnlyAction": "Action requires internet connection.",
+    "groups": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "other": "Other"
+    },
+    "filters": {
+      "status": "Status",
+      "payment": "Payment",
+      "all": "All"
+    },
+    "actions": {
+      "send": "Send",
+      "print": "Print",
+      "void": "Void",
+      "refund": "Refund"
+    },
+    "status": {
+      "completed": "Completed",
+      "voided": "Voided",
+      "refunded": "Refunded",
+      "pendingSync": "Pending Sync"
+    },
+    "emptyTitle": "No receipts yet",
+    "notFoundTitle": "Receipt not found"
+  },
+  "paymentsSettings": {
+    "cash": "Cash",
+    "card": "Card",
+    "wallet": "Wallet",
+    "defaultMethod": "Default Method",
+    "saved": "Payment settings saved locally",
+    "split": "Split",
+    "lastSavedAt": "Saved at {{date}}"
+  },
+  "printer": {
+    "scanDevices": "Scan Devices",
+    "connectDisconnect": "Connect/Disconnect",
+    "testPrint": "Test Print",
+    "scanDone": "Scan placeholder complete.",
+    "connectDone": "Connect placeholder complete.",
+    "testDone": "Test print placeholder complete.",
+    "status": "Printer status",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "selectedDevice": "Selected device",
+    "selectDevice": "Select a device",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "scanSuccess": "Scan completed. {{count}} devices found.",
+    "selectPrinterFirst": "Select a printer first.",
+    "connectSuccess": "Connected to {{name}}.",
+    "disconnectSuccess": "Printer disconnected.",
+    "connectBeforeTest": "Connect a printer before test print.",
+    "testSuccess": "Test print sent successfully.",
+    "lastScanAt": "Last scan: {{date}}",
+    "lastTestAt": "Last test print: {{date}}",
+    "lastSavedAt": "Saved at {{date}}"
+  },
+  "reports": {
+    "todaySales": "Today Sales",
+    "receiptsCount": "Receipts",
+    "exportCsv": "Export CSV",
+    "exportDone": "CSV export completed. {{count}} receipts included.",
+    "refresh": "Refresh Data",
+    "todayTax": "Today Tax",
+    "noDataToExport": "No receipts available for export.",
+    "emptyTitle": "No sales today",
+    "emptyDescription": "Issue receipts to see today's summary.",
+    "lastExportAt": "Last export: {{date}}"
+  },
+  "support": {
+    "faqOffline": "How does offline mode work?",
+    "faqOfflineAnswer": "Receipts can be queued locally and synced once connectivity returns.",
+    "faqTenant": "How is tenant isolation enforced?",
+    "faqTenantAnswer": "API requests include JWT scope and merchant context; backend validates access.",
+    "contact": "Contact Support",
+    "preferredChannel": "Preferred channel",
+    "notes": "Support notes",
+    "notesPlaceholder": "Describe the issue, context, and steps to reproduce.",
+    "saveDraft": "Save Draft",
+    "draftSaved": "Support draft saved.",
+    "contactStarted": "Support email opened.",
+    "lastContactAt": "Last contact: {{date}}",
+    "channel": {
+      "email": "Email",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "profile": {
+    "title": "User Profile",
+    "refresh": "Refresh from /api/me",
+    "fetchFailed": "Failed to load profile: {{message}}",
+    "merchantsTitle": "Merchant Memberships",
+    "noMerchants": "No merchant memberships found.",
+    "rawJson": "Raw /api/me JSON",
+    "fields": {
+      "id": "User ID",
+      "name": "Full Name",
+      "givenName": "Given Name",
+      "familyName": "Family Name",
+      "email": "Email",
+      "merchantCount": "Merchant Count",
+      "role": "Role",
+      "vatNumber": "VAT Number",
+      "address": "Address"
+    }
+  }
+}

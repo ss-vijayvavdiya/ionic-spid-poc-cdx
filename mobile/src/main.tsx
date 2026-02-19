@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { setupIonicReact } from '@ionic/react';
 import App from './App';
+import './i18n';
 
 // Ionic core styles (required)
 import '@ionic/react/css/core.css';
@@ -23,6 +24,7 @@ import '@ionic/react/css/display.css';
 
 // Custom theme variables
 import './theme/variables.css';
+import './styles/app.css';
 
 // Required initialization for Ionic React.
 setupIonicReact();

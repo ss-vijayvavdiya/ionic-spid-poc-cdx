@@ -6,6 +6,7 @@ import { config } from './config';
 
 export type AppJwtPayload = {
   sub: string;
+  merchantIds: string[];
   name?: string;
   given_name?: string;
   family_name?: string;
@@ -31,5 +32,18 @@ export function verifyAppJwt(token: string): AppJwtPayload {
     throw new Error('Invalid token payload');
   }
 
-  return decoded as AppJwtPayload;
+  const payload = decoded as Partial<AppJwtPayload>;
+
+  if (typeof payload.sub !== 'string') {
+    throw new Error('Invalid token subject');
+  }
+
+  return {
+    sub: payload.sub,
+    merchantIds: Array.isArray(payload.merchantIds) ? payload.merchantIds : [],
+    name: payload.name,
+    given_name: payload.given_name,
+    family_name: payload.family_name,
+    email: payload.email
+  };
 }

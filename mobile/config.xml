@@ -38,13 +38,13 @@
   <plugin name="ionic-plugin-deeplinks" spec="^1.0.20">
     <variable name="URL_SCHEME" value="smartsense" />
     <variable name="DEEPLINK_SCHEME" value="https" />
-    <variable name="DEEPLINK_HOST" value="8343-14-195-76-134.ngrok-free.app" />
+    <variable name="DEEPLINK_HOST" value="057b-14-195-76-134.ngrok-free.app" />
     <variable name="ANDROID_PATH_PREFIX" value="/auth/callback" />
   </plugin>
 
   <!-- Universal Links configuration used by the deeplinks plugin -->
   <universal-links>
-    <host name="8343-14-195-76-134.ngrok-free.app" scheme="https">
+    <host name="057b-14-195-76-134.ngrok-free.app" scheme="https">
       <path url="/auth/callback" />
     </host>
   </universal-links>

@@ -26,7 +26,7 @@ export function setupDeepLinks(onUrl: DeepLinkHandler): void {
   // Helper to emit only non-empty URLs.
   const emit = (url: string) => {
     if (!url) return;
-    console.log('[deeplink] Received URL:', url);
+    // Avoid logging deep link URLs because they can contain auth codes.
     onUrl(url);
   };
 

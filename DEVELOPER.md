@@ -1,226 +1,152 @@
-# SPID-Style SSO PoC Stakeholder Brief
+# Developer Implementation Guide
 
-This document summarizes the SPID-style SSO PoC built with a React + Ionic + Cordova Android app and a Node.js (TypeScript) backend using the Signicat sandbox. It explains what we achieved, the approach, the implementation choices, and why those choices were made. It also includes architecture and data flow diagrams.
+This document captures the current implementation status, architecture decisions, and operational flow for the SPID POS PoC.
 
----
+## Scope delivered
 
-**Executive Summary**
+- SPID sandbox auth via Signicat using OIDC Authorization Code + PKCE.
+- Backend-only Signicat token handling; mobile receives only app JWT.
+- Multi-merchant POS API surface with tenant guards.
+- Offline-first local DB and sync queue in mobile app.
+- Side-menu navigation and i18n (`en`, `it`, `de`).
+- Persisted settings flows for Payments, Printer, Reports, Support.
+- Backend integration tests for tenant isolation and receipt idempotency.
+- Audit logs for void/refund actions.
 
-We built a production-aligned SPID-style authentication flow where the mobile app never handles Signicat access tokens directly. Instead, the backend performs OIDC Authorization Code + PKCE with Signicat, validates the ID token, and then mints an app-specific JWT for API access. The flow works end-to-end on Android using App Links and a custom scheme fallback to address ngrok free domain changes.
-
----
-
-**Objectives**
-
-1. Implement a production-style login with Signicat sandbox using OIDC Authorization Code flow.
-2. Keep the mobile app insulated from IdP tokens.
-3. Make ngrok free usable by auto-updating BASE_URL and providing a fallback deep link mechanism.
-4. Ensure future production migration only requires changing BASE_URL and Signicat redirect URI.
-
----
-
-**What We Built**
-
-1. **Node.js TypeScript backend** in `server/` that:
-   - Performs OIDC discovery and code exchange with Signicat.
-   - Validates ID token + nonce.
-   - Enforces PKCE.
-   - Mints and verifies an app JWT.
-   - Serves a dynamic `/.well-known/assetlinks.json`.
-2. **Ionic React + Cordova Android app** in `mobile/` that:
-   - Launches SPID login in the system browser.
-   - Receives the callback via App Links or custom scheme fallback.
-   - Exchanges the code with the backend and stores the app JWT.
-   - Calls a protected `/api/me` endpoint.
-3. **ngrok update script** in `scripts/` that:
-   - Detects ngrok public HTTPS URL.
-   - Updates server and mobile config for BASE_URL.
-   - Updates App Links host configuration.
-4. **Comprehensive setup and troubleshooting guide** in `README.md`.
-
----
-
-**Architecture Overview**
+## Architecture overview
 
 ```mermaid
 flowchart TD
-  U["User"] --> A["Android App (Ionic + Cordova)"]
-  A -->|"Open system browser"| B["Backend: /auth/spid/start"]
-  B -->|"Redirect to authorize"| C["Signicat OIDC Authorize"]
-  C -->|"Redirect with code/state"| D["Backend: /auth/callback (HTML)"]
-  D -->|"HTTPS App Link"| A
-  D -->|"Custom scheme fallback"| A
-  A -->|"POST /auth/exchange"| E["Backend: /auth/exchange"]
-  E -->|"Code exchange + ID token validation"| C
-  E -->|"Mint app JWT"| A
-  A -->|"GET /api/me with Bearer JWT"| F["Backend: /api/me"]
+  U["Cashier User"] --> M["Ionic React App (Cordova Android)"]
+  M --> B["Node.js Backend (Express)"]
+  B --> S["Signicat Sandbox OIDC"]
+  B --> D["SQLite (server)"]
+  M --> L["Local DB (SQLite plugin or IndexedDB fallback)"]
 ```
 
----
-
-**Key Design Decisions and Rationale**
-
-1. **Authorization Code Flow with PKCE**
-   - Reason: Modern mobile security best practice.
-   - Outcome: Signicat accepts requests and mitigates authorization code interception.
-
-2. **Backend-minted JWT**
-   - Reason: App APIs should not depend on Signicat tokens.
-   - Outcome: Separation of concerns and easier provider swap.
-
-3. **App Links + Custom Scheme Fallback**
-   - Reason: ngrok free domain changes break App Links host matching.
-   - Outcome: App Links are used when possible. The fallback ensures the app still opens.
-
-4. **Dynamic Asset Links**
-   - Reason: App Links require current host mapping.
-   - Outcome: `/.well-known/assetlinks.json` is generated at runtime using env values.
-
----
-
-**Implementation Details**
-
-**Backend Components**
-
-1. **OIDC Client Setup**
-   - `openid-client` with discovery from `SIGNICAT_ISSUER`.
-   - `redirect_uri` is always `BASE_URL/auth/callback`.
-
-2. **State + Nonce + PKCE**
-   - State prevents CSRF.
-   - Nonce ensures ID token is bound to this auth request.
-   - PKCE adds proof-of-possession for the code.
-
-3. **Token Exchange**
-   - `POST /auth/exchange` receives `code` and `state`.
-   - Server exchanges code at Signicat, validates ID token, and mints app JWT.
-
-4. **Protected API**
-   - `GET /api/me` validates the app JWT and returns user info.
-
-**Mobile Components**
-
-1. **Login Flow**
-   - System browser via InAppBrowser plugin.
-   - Deep link capture via App Links and `cordova-plugin-customurlscheme`.
-
-2. **Callback Parsing**
-   - Accepts any URL containing `code` and `state`.
-   - Calls `/auth/exchange` to obtain app JWT.
-
-3. **UI**
-   - Login screen with status and last callback URL.
-   - Home screen with user details and action buttons.
-
----
-
-**Data Flow: Token Lifecycle**
+## Authentication flow
 
 ```mermaid
 sequenceDiagram
   participant App as "Mobile App"
-  participant Backend as "Backend"
-  participant Signicat as "Signicat OIDC"
+  participant Api as "Backend"
+  participant IdP as "Signicat"
 
-  App->>Backend: GET /auth/spid/start
-  Backend->>Signicat: Redirect to /authorize (state, nonce, PKCE)
-  Signicat-->>Backend: Redirect to /auth/callback?code&state
-  Backend-->>App: HTML page, App Links + fallback
-  App->>Backend: POST /auth/exchange { code, state }
-  Backend->>Signicat: Token endpoint exchange
-  Signicat-->>Backend: ID token + access token
-  Backend-->>App: App JWT
-  App->>Backend: GET /api/me (Bearer App JWT)
-  Backend-->>App: User profile
+  App->>Api: GET /auth/spid/start
+  Api->>IdP: Redirect authorize (state, nonce, PKCE)
+  IdP-->>Api: Redirect /auth/callback?code&state
+  Api-->>App: Callback HTML + HTTPS link + smartsense:// fallback
+  App->>Api: POST /auth/exchange { code, state }
+  Api->>IdP: Token exchange + ID token validation
+  Api-->>App: App JWT + user profile
+  App->>Api: GET /api/me (Bearer app JWT)
 ```
 
----
-
-**Architecture with Trust Boundaries**
+## Tenant isolation model
 
 ```mermaid
 flowchart LR
-  subgraph Device["Android Device"]
-    A["App WebView"]
-    B["System Browser"]
-  end
-
-  subgraph Backend["Backend (Node.js)"]
-    C["OIDC Client"]
-    D["JWT Issuer"]
-  end
-
-  subgraph IdP["Signicat Sandbox"]
-    E["OIDC Authorize"]
-    F["OIDC Token"]
-  end
-
-  A -->|Open| B
-  B -->|/auth/spid/start| C
-  C -->|/authorize| E
-  E -->|code| C
-  C -->|/token| F
-  C -->|app JWT| A
+  R["Incoming /api request"] --> A["JWT auth middleware"]
+  A --> T["Tenant guard"]
+  T --> C["Check x-merchant-id or body merchantId"]
+  C --> M["Verify merchant in JWT merchantIds"]
+  M -->|"allowed"| H["Route handler"]
+  M -->|"forbidden"| F["HTTP 403"]
 ```
 
----
-
-**Operational Flow for ngrok**
+## Offline sync model
 
 ```mermaid
 flowchart TD
-  A["Start backend on localhost:4000"] --> B["Start ngrok http 4000"]
-  B --> C["Run start-ngrok-and-update.js"]
-  C --> D["Update server/.env BASE_URL"]
-  C --> E["Update mobile/src/config.ts BASE_URL"]
-  C --> F["Update mobile/config.xml host"]
-  F --> G["Rebuild Android app"]
-  D --> H["Update Signicat redirect URI"]
+  C["Issue receipt in Checkout"] --> O{"Online?"}
+  O -->|"No"| Q["Save receipt local + enqueue sync"]
+  O -->|"Yes"| P["POST /api/receipts"]
+  Q --> N["Sync manager retries with backoff"]
+  N --> P
+  P --> I{"Duplicate clientReceiptId?"}
+  I -->|"Yes"| E["Return existing receipt (idempotent)"]
+  I -->|"No"| S["Create receipt + items + number"]
+  E --> U["Mark local receipt synced"]
+  S --> U
 ```
 
----
+## Backend implementation details
 
-**Key Endpoints**
+### Security and API hardening
 
-1. `GET /health`  
-2. `GET /auth/spid/start`  
-3. `GET /auth/callback`  
-4. `POST /auth/exchange`  
-5. `GET /api/me`  
+- `helmet` and `express-rate-limit` enabled globally.
+- Strict CORS allow-list from config.
+- `zod` validation for request params/query/body.
+- JWT auth middleware injects authenticated user claims.
+- Tenant guard enforces merchant membership before route handler.
 
----
+### Receipt idempotency
 
-**Security Considerations**
+- API expects `clientReceiptId` from mobile.
+- DB enforces unique tuple `(merchant_id, client_receipt_id)`.
+- Duplicate create request returns existing receipt (`200`, `idempotent: true`).
 
-1. State and nonce stored in memory to prevent CSRF and replay.
-2. PKCE is mandatory for Signicat and secure mobile OIDC.
-3. App JWT is short-lived and separated from IdP tokens.
-4. App Links require correct SHA256 signature in asset links.
+### Audit logging
 
----
+- `void` and `refund` service paths emit structured log entries.
+- `sync_events` captures state changes and `actedByUserId` metadata.
 
-**Known Limitations**
+### Integration tests
 
-1. In-memory session store is not persistent.
-2. ngrok free requires reconfiguring Signicat redirect each restart.
-3. Device token storage uses localStorage (replace with secure storage for prod).
-4. App Links auto-open is not guaranteed with dynamic host.
+- File: `/Users/vijay/projects/poc/ionic-spid-poc-cdx/server/src/tests/api.integration.test.ts`
+- Scenarios:
+  - cross-merchant access denied
+  - same-merchant access allowed
+  - duplicate `clientReceiptId` does not create duplicate rows
 
----
+Run:
 
-**Next Steps for Production**
+```bash
+cd /Users/vijay/projects/poc/ionic-spid-poc-cdx/server
+npm run test:integration
+```
 
-1. Use a stable domain with real TLS cert.
-2. Replace in-memory store with Redis or DB.
-3. Use secure storage for JWT on device.
-4. Add structured logging and monitoring.
-5. Add refresh tokens if long sessions are required.
+## Mobile implementation details
 
----
+### UX structure
 
-**Appendix: Key Files**
+- Side menu (`IonMenu`) with POS pages and settings routes.
+- Page scaffolding with online/offline badge.
+- Reusable `EmptyState` and `ListSkeleton` for clearer loading/empty UX.
 
-1. Backend entry point: `/Users/vijay/projects/poc/ionic-spid-poc-cdx/server/src/index.ts`
-2. Mobile app entry point: `/Users/vijay/projects/poc/ionic-spid-poc-cdx/mobile/src/App.tsx`
-3. Deep link handling: `/Users/vijay/projects/poc/ionic-spid-poc-cdx/mobile/src/services/deepLink.ts`
-4. ngrok helper: `/Users/vijay/projects/poc/ionic-spid-poc-cdx/scripts/start-ngrok-and-update.js`
+### Persisted settings
+
+- Settings context persists local values for:
+  - payments methods and default payment
+  - printer selection/connection/test metadata
+  - report export metadata
+  - support preferences and draft notes
+
+### Data layer
+
+- Local DB abstraction prefers SQLite plugin on device.
+- IndexedDB fallback for browser/dev environments.
+- Sync queue stores pending receipts and retry metadata.
+- Sync manager auto-runs on connectivity restore.
+
+## Current runbook
+
+1. Start backend (`npm run dev` in `server`).
+2. Start ngrok (`ngrok http 4000`).
+3. Run URL sync script (`node scripts/start-ngrok-and-update.js`).
+4. Update Signicat redirect URI to `https://<ngrok>/auth/callback`.
+5. Build/run app (`ionic build`, `npx cordova run android`).
+
+## Known limitations
+
+- ngrok free host changes still require app rebuild for HTTPS app-link host match.
+- JWT storage is not yet migrated to secure storage plugin.
+- Printer integration is simulated; no hardware SDK binding yet.
+- CSV export uses client-side file generation.
+
+## Next recommended increment
+
+1. Replace localStorage token handling with secure storage plugin.
+2. Add backend integration tests for void/refund authorization and audit event writes.
+3. Add background sync observability (last run, last failure reason in UI).
+4. Introduce migration path from SQLite to PostgreSQL repositories.

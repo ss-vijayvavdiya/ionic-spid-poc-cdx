@@ -1,0 +1,253 @@
+{
+  "app": {
+    "name": "SmartSense POS",
+    "offline": "Offline",
+    "online": "Online"
+  },
+  "menu": {
+    "checkout": "Cassa",
+    "receipts": "Storico",
+    "products": "Prodotti",
+    "customers": "Clienti",
+    "profile": "Profilo",
+    "payments": "Pagamenti",
+    "printer": "Stampante",
+    "reports": "Report",
+    "settings": "Impostazioni",
+    "support": "Supporto",
+    "logout": "Esci",
+    "switchMerchant": "Cambia esercente",
+    "currentMerchant": "Esercente corrente"
+  },
+  "auth": {
+    "title": "Accesso",
+    "subtitle": "Accedi con SPID tramite Signicat.",
+    "loginWithSpid": "Accedi con SPID",
+    "continueLogin": "Continua accesso (usa callback)",
+    "status": "Stato",
+    "lastCallback": "Ultimo URL callback",
+    "loggedOut": "Disconnesso.",
+    "loginSuccess": "Accesso completato.",
+    "loginFailed": "Accesso fallito: {{message}}",
+    "exchangeInProgress": "Scambio codice con backend...",
+    "missingCodeState": "URL callback senza code/state.",
+    "fetchProfileFailed": "Impossibile caricare il profilo",
+    "loginFirst": "Effettua prima l'accesso."
+  },
+  "pages": {
+    "checkout": "Cassa",
+    "receipts": "Storico",
+    "receiptDetail": "Dettaglio scontrino",
+    "products": "Prodotti",
+    "profile": "Profilo",
+    "newProduct": "Nuovo prodotto",
+    "editProduct": "Modifica prodotto",
+    "settings": "Impostazioni",
+    "language": "Lingua",
+    "paymentSettings": "Pagamenti",
+    "printerSettings": "Stampante",
+    "reports": "Report",
+    "support": "Supporto",
+    "customers": "Clienti",
+    "merchantSelect": "Seleziona esercente"
+  },
+  "common": {
+    "comingSoon": "Sezione pronta come base, verrà estesa nel prossimo step.",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "select": "Seleziona",
+    "search": "Cerca",
+    "noData": "Nessun dato",
+    "pendingSync": "In attesa sync ({{count}})",
+    "back": "Indietro",
+    "loading": "Caricamento..."
+  },
+  "settings": {
+    "languageDescription": "Scegli la lingua dell'app. La scelta viene salvata sul dispositivo.",
+    "languageEnglish": "English",
+    "languageItalian": "Italiano",
+    "languageGerman": "Deutsch",
+    "businessProfile": "Profilo attività",
+    "payments": "Pagamenti",
+    "printer": "Stampante",
+    "reports": "Report",
+    "support": "Supporto"
+  },
+  "merchant": {
+    "notSelected": "Seleziona un esercente prima di continuare."
+  },
+  "payment": {
+    "cash": "Contanti",
+    "card": "Carta",
+    "wallet": "Wallet",
+    "split": "Diviso"
+  },
+  "sync": {
+    "title": "Sincronizzazione",
+    "pending": "In attesa",
+    "failed": "Fallito",
+    "synced": "Sincronizzato"
+  },
+  "checkout": {
+    "products": "Prodotti",
+    "searchProducts": "Cerca prodotto per nome",
+    "refreshProducts": "Aggiorna prodotti",
+    "cart": "Carrello",
+    "remove": "Rimuovi",
+    "emptyCart": "Carrello vuoto.",
+    "emptyCartError": "Aggiungi almeno un prodotto.",
+    "subtotal": "Subtotale",
+    "tax": "IVA",
+    "vat": "IVA",
+    "total": "Totale",
+    "issueReceipt": "Emetti scontrino",
+    "selectPayment": "Seleziona metodo di pagamento",
+    "selectPaymentSubtitle": "Scegli come ha pagato il cliente.",
+    "queuedForSync": "Scontrino in coda per sync (offline).",
+    "issuedSuccess": "Scontrino emesso con successo.",
+    "issueFailed": "Impossibile emettere lo scontrino",
+    "emptyProductsTitle": "Nessun prodotto disponibile",
+    "emptyProductsDescription": "Aggiungi prodotti o aggiorna dal server per iniziare la cassa.",
+    "emptyCartTitle": "Carrello vuoto"
+  },
+  "products": {
+    "title": "Prodotti",
+    "searchPlaceholder": "Cerca prodotti",
+    "refresh": "Aggiorna",
+    "addProduct": "Aggiungi prodotto",
+    "loadDemo": "Carica prodotti demo",
+    "demoSeeded": "Prodotti demo caricati: {{count}}",
+    "empty": "Nessun prodotto per questo esercente",
+    "newTitle": "Crea prodotto",
+    "editTitle": "Modifica prodotto",
+    "saved": "Prodotto salvato",
+    "notFound": "Prodotto non trovato",
+    "fields": {
+      "name": "Nome",
+      "priceCents": "Prezzo (centesimi)",
+      "vatRate": "Aliquota IVA (%)",
+      "category": "Categoria",
+      "sku": "SKU"
+    },
+    "validation": {
+      "nameRequired": "Il nome prodotto è obbligatorio.",
+      "priceRequired": "Il prezzo deve essere maggiore di 0.",
+      "vatRequired": "L'aliquota IVA deve essere 0 o superiore.",
+      "invalid": "Controlla i campi del prodotto."
+    },
+    "emptyTitle": "Nessun prodotto trovato"
+  },
+  "receipts": {
+    "title": "Scontrini",
+    "empty": "Nessuno scontrino",
+    "notFound": "Scontrino non trovato",
+    "onlineOnlyAction": "Azione disponibile solo online.",
+    "groups": {
+      "today": "Oggi",
+      "yesterday": "Ieri",
+      "other": "Altro"
+    },
+    "filters": {
+      "status": "Stato",
+      "payment": "Pagamento",
+      "all": "Tutti"
+    },
+    "actions": {
+      "send": "Invia",
+      "print": "Stampa",
+      "void": "Annulla",
+      "refund": "Rimborso"
+    },
+    "status": {
+      "completed": "Completato",
+      "voided": "Annullato",
+      "refunded": "Rimborsato",
+      "pendingSync": "In attesa sync"
+    },
+    "emptyTitle": "Nessuno scontrino disponibile",
+    "notFoundTitle": "Scontrino non trovato"
+  },
+  "paymentsSettings": {
+    "cash": "Contanti",
+    "card": "Carta",
+    "wallet": "Wallet",
+    "defaultMethod": "Metodo predefinito",
+    "saved": "Impostazioni pagamento salvate localmente",
+    "split": "Diviso",
+    "lastSavedAt": "Salvato il {{date}}"
+  },
+  "printer": {
+    "scanDevices": "Scansiona dispositivi",
+    "connectDisconnect": "Connetti/Disconnetti",
+    "testPrint": "Stampa di prova",
+    "scanDone": "Scansione completata (placeholder).",
+    "connectDone": "Connessione completata (placeholder).",
+    "testDone": "Stampa di prova completata (placeholder).",
+    "status": "Stato stampante",
+    "connected": "Connessa",
+    "disconnected": "Disconnessa",
+    "selectedDevice": "Dispositivo selezionato",
+    "selectDevice": "Seleziona un dispositivo",
+    "connect": "Connetti",
+    "disconnect": "Disconnetti",
+    "scanSuccess": "Scansione completata. Trovati {{count}} dispositivi.",
+    "selectPrinterFirst": "Seleziona prima una stampante.",
+    "connectSuccess": "Connesso a {{name}}.",
+    "disconnectSuccess": "Stampante disconnessa.",
+    "connectBeforeTest": "Connetti una stampante prima del test.",
+    "testSuccess": "Stampa di prova inviata con successo.",
+    "lastScanAt": "Ultima scansione: {{date}}",
+    "lastTestAt": "Ultimo test stampa: {{date}}",
+    "lastSavedAt": "Salvato il {{date}}"
+  },
+  "reports": {
+    "todaySales": "Vendite di oggi",
+    "receiptsCount": "Scontrini",
+    "exportCsv": "Esporta CSV",
+    "exportDone": "Export CSV completato. {{count}} scontrini inclusi.",
+    "refresh": "Aggiorna dati",
+    "todayTax": "IVA di oggi",
+    "noDataToExport": "Nessuno scontrino disponibile per export.",
+    "emptyTitle": "Nessuna vendita oggi",
+    "emptyDescription": "Emetti scontrini per vedere il riepilogo giornaliero.",
+    "lastExportAt": "Ultimo export: {{date}}"
+  },
+  "support": {
+    "faqOffline": "Come funziona la modalità offline?",
+    "faqOfflineAnswer": "Gli scontrini vengono messi in coda locale e sincronizzati quando torna la rete.",
+    "faqTenant": "Come viene applicato l'isolamento tenant?",
+    "faqTenantAnswer": "Le API usano scope JWT e contesto merchant; il backend valida gli accessi.",
+    "contact": "Contatta supporto",
+    "preferredChannel": "Canale preferito",
+    "notes": "Note di supporto",
+    "notesPlaceholder": "Descrivi il problema, il contesto e i passaggi per riprodurlo.",
+    "saveDraft": "Salva bozza",
+    "draftSaved": "Bozza supporto salvata.",
+    "contactStarted": "Email di supporto aperta.",
+    "lastContactAt": "Ultimo contatto: {{date}}",
+    "channel": {
+      "email": "Email",
+      "phone": "Telefono",
+      "whatsapp": "WhatsApp"
+    }
+  },
+  "profile": {
+    "title": "Profilo Utente",
+    "refresh": "Aggiorna da /api/me",
+    "fetchFailed": "Impossibile caricare il profilo: {{message}}",
+    "merchantsTitle": "Appartenenza esercenti",
+    "noMerchants": "Nessun esercente associato.",
+    "rawJson": "JSON raw di /api/me",
+    "fields": {
+      "id": "ID utente",
+      "name": "Nome completo",
+      "givenName": "Nome",
+      "familyName": "Cognome",
+      "email": "Email",
+      "merchantCount": "Numero esercenti",
+      "role": "Ruolo",
+      "vatNumber": "Partita IVA",
+      "address": "Indirizzo"
+    }
+  }
+}

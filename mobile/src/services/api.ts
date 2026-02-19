@@ -15,11 +15,19 @@ export type ExchangeResponse = {
   };
 };
 
+function buildBaseHeaders(): Record<string, string> {
+  return {
+    // Required for ngrok free browser interstitial bypass in API requests.
+    'ngrok-skip-browser-warning': 'true'
+  };
+}
+
 // Exchange the Signicat authorization code for our own app JWT.
 export async function exchangeCode(code: string, state: string): Promise<ExchangeResponse> {
   const response = await fetch(`${BASE_URL}/auth/exchange`, {
     method: 'POST',
     headers: {
+      ...buildBaseHeaders(),
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ code, state })
@@ -37,6 +45,7 @@ export async function exchangeCode(code: string, state: string): Promise<Exchang
 export async function fetchMe(token: string): Promise<any> {
   const response = await fetch(`${BASE_URL}/api/me`, {
     headers: {
+      ...buildBaseHeaders(),
       Authorization: `Bearer ${token}`
     }
   });

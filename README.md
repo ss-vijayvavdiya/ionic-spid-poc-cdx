@@ -1,103 +1,82 @@
-# SPID-Style SSO PoC (Ionic React + Cordova + Node.js)
+# SPID POS PoC (Ionic React + Cordova + Node.js)
 
-This repo is a complete, production-style proof of concept for SPID-style login using the Signicat sandbox with OIDC Authorization Code flow. The mobile app uses a system browser for login, receives the callback via App Links, and exchanges the code with the backend. The backend validates the ID token and mints its own JWT for app APIs.
+This monorepo contains a production-style SPID authentication PoC plus a multi-merchant POS shell with offline-first receipts.
 
-Add secret
-Client ID:
-sandbox-poised-snake-501
-content_copy
-Secret name
-oidc-client-secret-spid-poc
-Client secret
-1GYyOSpP5lumBxaIYvyHyNvZvA2d0oKt2Qu0RwdukGCuRbQN
+## What is implemented now
 
-The callback path is fixed and must be exactly:
-
-`https://<domain>/auth/callback`
-
-Because ngrok free domains change, the app includes a custom scheme fallback so you can still log in even if App Links do not auto-open.
+- SPID login via Signicat sandbox using OIDC Authorization Code + PKCE.
+- Backend token exchange + ID token validation.
+- Backend-issued app JWT (mobile app never stores Signicat tokens).
+- Multi-merchant guarded APIs (`X-Merchant-Id` + JWT merchant memberships).
+- Offline-first receipts with local queue and background sync.
+- Idempotent receipt creation on backend (`merchantId + clientReceiptId`).
+- Side-menu Ionic app with i18n (`en`, `it`, `de`).
+- Persisted settings pages for Payments, Printer, Reports, Support.
+- Empty states + skeleton loaders on major pages.
+- Integration tests for tenant isolation and receipt idempotency.
 
 ---
 
-## Repo Layout
+## Repository structure
 
-- `server/` Node.js TypeScript backend (Express + openid-client)
-- `mobile/` Ionic React TypeScript + Cordova Android app
-- `scripts/` ngrok helper scripts
-- `README.md` (this file)
+- `server/` Express + TypeScript backend
+- `mobile/` Ionic React + TypeScript + Cordova Android app
+- `scripts/` ngrok URL detection and config update scripts
+- `DEVELOPER.md` implementation and architecture guide
 
 ---
 
-## 1) Tools to Install
+## Prerequisites
 
-Install the following tools before running the PoC.
+Install:
 
 - Git
-- Node.js + npm (already installed)
+- Node.js 20+ and npm
 - Java JDK 17
-- Android Studio
-- Android SDK + Platform Tools (`adb`)
-- Set `ANDROID_HOME` and add `platform-tools` to your PATH
+- Android Studio + Android SDK + platform-tools (`adb`)
 - ngrok (free)
 - Ionic CLI: `npm i -g @ionic/cli`
 - Cordova CLI: `npm i -g cordova`
 
----
-
-## 2) Android Emulator Setup
-
-1. Open Android Studio.
-1. Open **Device Manager**.
-1. Create a new AVD (Pixel device is fine).
-1. Start the emulator.
-1. Verify the emulator is connected:
+Set Android env (macOS example):
 
 ```bash
-adb devices
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 ```
-
-You should see a device like `emulator-5554`.
 
 ---
 
-## 3) Debug Keystore SHA256 Fingerprint
+## Required environment values
 
-Android App Links require the SHA256 fingerprint of the app signing key. For development, use the default debug keystore.
+Create `server/.env` with:
 
-Run:
+```env
+PORT=4000
+BASE_URL=https://<current-ngrok-domain>
+SIGNICAT_ISSUER=<from-signicat-dashboard>
+SIGNICAT_CLIENT_ID=<from-signicat-dashboard>
+SIGNICAT_CLIENT_SECRET=<from-signicat-dashboard>
+SIGNICAT_SCOPE=openid profile email
+ANDROID_PACKAGE_NAME=com.smartsense.spidpoc
+ANDROID_SHA256_FINGERPRINT=<debug-keystore-sha256>
+APP_JWT_SECRET=<long-random-secret>
+SQLITE_PATH=./data/app.sqlite
+```
+
+Get debug SHA256:
 
 ```bash
 keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
 ```
 
-Copy the **SHA256** fingerprint and put it into:
+Signicat redirect URI must be exactly:
 
-`server/.env` -> `ANDROID_SHA256_FINGERPRINT`
-
----
-
-## 4) Signicat Sandbox Setup
-
-In the Signicat dashboard (sandbox):
-
-1. Create or open your OIDC client.
-1. Obtain these values and put them into `server/.env`:
-
-- `SIGNICAT_ISSUER`
-- `SIGNICAT_CLIENT_ID`
-- `SIGNICAT_CLIENT_SECRET`
-
-3. Configure the redirect URI to the exact path:
-
-`https://<your-current-ngrok-domain>/auth/callback`
-
-4. Enable SPID in the sandbox and ensure SPID test is enabled.
+`https://<current-ngrok-domain>/auth/callback`
 
 ---
 
-## 5) Running the PoC (Exact Commands)
-
-### Backend
+## Run the backend
 
 ```bash
 cd /Users/vijay/projects/poc/ionic-spid-poc-cdx/server
@@ -105,113 +84,138 @@ npm install
 npm run dev
 ```
 
-The server will start on `http://localhost:4000`.
+Health check:
 
-### ngrok
+- `http://localhost:4000/health`
 
-In a new terminal:
+---
+
+## Run ngrok and sync config
+
+Start tunnel:
 
 ```bash
 ngrok http 4000
 ```
 
-### Auto-update BASE_URL
-
-In another terminal:
+Update project files from ngrok URL:
 
 ```bash
 cd /Users/vijay/projects/poc/ionic-spid-poc-cdx
 node scripts/start-ngrok-and-update.js
 ```
 
-This script updates:
+This updates:
 
-- `server/.env` -> `BASE_URL`
-- `mobile/src/config.ts` -> `BASE_URL`
-- `mobile/config.xml` -> `DEEPLINK_HOST` and `<universal-links>` host
+- `server/.env` (`BASE_URL`)
+- `mobile/src/config.ts` (`BASE_URL`)
+- `mobile/config.xml` deep link host fields
 
-After the script runs:
+Then update Signicat redirect URI with the new ngrok host.
 
-- Update your Signicat redirect URI to: `https://<ngrok-domain>/auth/callback`
-- Test backend health: `https://<ngrok-domain>/health`
+---
 
-### Mobile App
+## Run mobile app (Android)
 
 ```bash
 cd /Users/vijay/projects/poc/ionic-spid-poc-cdx/mobile
 npm install
+ionic build
+npx cordova prepare android
+npx cordova run android
+```
 
-# Add Cordova platform and plugins (first time only)
+First-time plugin/platform setup:
+
+```bash
+cd /Users/vijay/projects/poc/ionic-spid-poc-cdx/mobile
 ionic cordova platform add android
 ionic cordova plugin add cordova-plugin-inappbrowser
 ionic cordova plugin add ionic-plugin-deeplinks \
   --variable URL_SCHEME=smartsense \
   --variable DEEPLINK_SCHEME=https \
-  --variable DEEPLINK_HOST=<your-current-ngrok-domain> \
+  --variable DEEPLINK_HOST=<current-ngrok-domain> \
   --variable ANDROID_PATH_PREFIX=/auth/callback
-
-# Build web assets and run on Android
-ionic build
-ionic cordova run android
 ```
 
-If the ngrok host changes later, re-run the ngrok script and **rebuild the Android app** to update App Links. Even if App Links do not work, the custom scheme fallback will still open the app.
+---
+
+## Auth + callback behavior
+
+1. App opens system browser to `https://<ngrok>/auth/spid/start`.
+2. Backend redirects to Signicat authorize endpoint.
+3. Signicat redirects to `https://<ngrok>/auth/callback?code=...&state=...`.
+4. Callback page tries HTTPS app-link reopen and shows fallback button.
+5. Fallback deep link is `smartsense://auth/callback?code=...&state=...`.
+6. App posts `{ code, state }` to `/auth/exchange`.
+7. Backend validates and returns app JWT.
+8. App uses JWT for `/api/*` calls.
 
 ---
 
-## 6) Login Flow (What to Expect)
+## Backend hardening checks
 
-1. App opens the system browser at `https://<ngrok-domain>/auth/spid/start`.
-1. Backend redirects to Signicat OIDC authorize endpoint.
-1. User logs in with SPID (Signicat sandbox).
-1. Signicat redirects to `https://<ngrok-domain>/auth/callback?code=...&state=...`.
-1. App Links try to open the app.
-1. If App Links fail, the callback page shows a **fallback button** that opens:
-
-`smartsense://auth/callback?code=...&state=...`
-
-1. App calls `/auth/exchange` and receives its own JWT.
-1. App calls `/api/me` and displays user info.
-
----
-
-## 7) Troubleshooting
-
-### App Links not opening the app
-
-- Confirm the current ngrok host matches `mobile/config.xml`.
-- Rebuild and reinstall the app after changing the host.
-- Check that `https://<ngrok-domain>/.well-known/assetlinks.json` returns JSON.
-- Verify `ANDROID_SHA256_FINGERPRINT` is correct.
-- Use the fallback button in the callback page (custom scheme).
-
-### assetlinks.json not accessible
-
-- Ensure the server is running and reachable via ngrok.
-- Visit `https://<ngrok-domain>/.well-known/assetlinks.json` directly.
-
-### Signature mismatch
-
-- Re-run the keytool command and verify the SHA256 fingerprint.
-- Update `server/.env` and restart the server.
-
-### Redirect URI mismatch (Signicat)
-
-- Update the Signicat redirect URI to match the **current** ngrok domain:
-
-`https://<ngrok-domain>/auth/callback`
-
-### View Android logs (logcat)
+Run integration tests:
 
 ```bash
-adb logcat | grep -i spid
+cd /Users/vijay/projects/poc/ionic-spid-poc-cdx/server
+npm run test:integration
+```
+
+Covered:
+
+- Tenant isolation (`403` when merchant access is invalid).
+- Receipt idempotency (duplicate `clientReceiptId` returns existing record).
+
+Build check:
+
+```bash
+npm run build
 ```
 
 ---
 
-## Notes for Production
+## Mobile QA checks
 
-- Replace ngrok with a stable HTTPS domain.
-- Replace in-memory session store with Redis or a database.
-- Use a secure storage plugin for JWT on device.
-- Add proper logging and monitoring.
+Type check + build:
+
+```bash
+cd /Users/vijay/projects/poc/ionic-spid-poc-cdx/mobile
+npx tsc --noEmit
+npm run build
+```
+
+Manual checks:
+
+- Login with SPID from app.
+- Merchant selection (if user has multiple merchants).
+- Issue receipt offline and verify `Pending Sync`.
+- Reconnect network and verify queued receipt syncs.
+- Settings persistence across app restart (payments/printer/support).
+
+---
+
+## Security notes
+
+- Do not commit real secrets in any `.md`, `.env`, or source files.
+- App JWT is short-lived and should be stored in secure storage plugin for production.
+- Backend enforces merchant access via JWT memberships + merchant context header/body consistency.
+- Void/refund actions write minimal audit events.
+
+---
+
+## Troubleshooting
+
+- App link not opening app:
+  - Re-run ngrok update script.
+  - Rebuild/reinstall app so manifest host matches.
+  - Verify `https://<ngrok>/.well-known/assetlinks.json`.
+- Signicat redirect mismatch:
+  - Ensure exact callback URL in dashboard: `https://<ngrok>/auth/callback`.
+- Backend token exchange errors:
+  - Validate `SIGNICAT_ISSUER`, client ID, client secret.
+- Check Android logs:
+
+```bash
+adb logcat | grep -Ei "spid|deeplink|cordova"
+```
